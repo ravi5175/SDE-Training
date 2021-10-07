@@ -7,8 +7,8 @@ public class W1D3 {
     private static int[] array;         // Array
     private static int findNumber;      // Number we need to find
     
-    private static int index; 
-    private static int pivot;
+    private static int index;           // Index of Number we need to find if exist else -1
+    private static int pivot;           // Pivot point if exist in array else 0
 
     public static void main(String[] args){
         // Input
@@ -22,16 +22,18 @@ public class W1D3 {
             // Calculate Pivot Point
             pivotPoint(0,arraySize-1);
 
+            // Check if element out of range
             if(findNumber > array[pivot] || findNumber < array[pivot+1] ){
                 System.out.println("Element Out of Range");
                 return;
             }
             
+            // Check if element lie in left or right side of pivot
             if(findNumber <= array[pivot] && findNumber>= array[0]){
-                System.out.println("this called");
+                // Element lies on left
                 binarySearch(0,pivot);
             }else{
-                System.out.println("that called");
+                // Element lies on right
                 binarySearch(pivot+1,arraySize-1);
             }
 
@@ -42,6 +44,8 @@ public class W1D3 {
                 System.out.println("Element Out of Range");
                 return;
             }
+
+            // Apply Binary Search to find element
             binarySearch(0,arraySize-1);
         }
 
@@ -54,6 +58,11 @@ public class W1D3 {
         }
     }
 
+    /**
+     * Binary Search By Recursion for Pivot Calculation
+     * @param low -> lower index of range
+     * @param high -> higher index of range
+     */
     private static void pivotPoint(int low,int high){
         if(low < high){
             int mid = (low+high)/2;
@@ -70,7 +79,9 @@ public class W1D3 {
     }
 
     /**
-     * Binary Search By Recursion (lower index, higher index)
+     * Binary Search By Recursion for Element Search
+     * @param low -> lower index of range
+     * @param high -> higher index of range
      */
     private static void binarySearch(int low,int high){
         if(low<high){
@@ -88,7 +99,7 @@ public class W1D3 {
     /**
      *  Input Method
      *  -> Input Size of array
-     *  -> Input Array Elements
+     *  -> Input Array Elements [sorted ascending order with or without pivot point]
      *  -> Input No. we need to find
      * 
      *  Important - Array needs to be sorted in ascending order
