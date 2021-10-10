@@ -8,15 +8,20 @@ public class W1D7Q1 {
     private static int rotateBy;
     public static void main(String[] args){
         takeInput();
+        reverseArray(0, arraySize-(1+rotateBy));
+        reverseArray(arraySize-rotateBy,arraySize-1);
+        reverseArray(0,arraySize-1);
         printOutput();
     }
 
     
-    private static int findGCD(int a,int b){
-        if(a == 0){
-            return b;
-        }else{
-            findGCD(b,a%b);
+    private static void reverseArray( int start,int end){
+        while(start<end){
+            int temp = array[end];
+            array[end] = array[start];
+            array[start] = temp;
+            start++;
+            end--;
         }
     }
 
@@ -24,7 +29,7 @@ public class W1D7Q1 {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter Size of Array : ");
         arraySize = scanner.nextInt();
-
+        array = new int[arraySize];
         for(int i=0;i<arraySize;i++){
             System.out.printf("Enter [%d] element : ",i);
             array[i] = scanner.nextInt();
