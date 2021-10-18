@@ -15,7 +15,6 @@ public class W2D13P1 {
         
     }
     
-
     private static void stringInterleaving(){
         int s3Length = s3.length();
 
@@ -71,7 +70,6 @@ public class W2D13P1 {
                         return;
                     }
                 }
-                
                 
             }
         }
