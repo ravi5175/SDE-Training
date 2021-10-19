@@ -13,18 +13,20 @@ class W3D15P1{
         Scanner scanner = new Scanner(System.in);
         int select = 0;
         while(loop){
-            System.out.println("Requests : \n
-                                1 - Insertion and Display\n
-                                2 - Delete a given key\n
-                                3 - Delete at Position\n
-                                4 - Delete entire list\n
-                                5 - Print length of list\n
-                                6 - Search an element in list\n
-                                7 - Get n'th node in list\n
-                                8 - Quit program
-                                ");
-            
-            select = scanner.nextInt(); 
+            System.out.println(
+                "Requests :\n"+
+                "1 - Insertion and Display\n"+
+                "2 - Delete a given key\n"+
+                "3 - Delete at Position\n"+
+                "4 - Delete entire list\n"+
+                "5 - Print length of list (Itterative)\n"+
+                "6 - Print length of list (Recursion)\n"+
+                "7 - Search an element in list (Itterative\n"+
+                "8 - Search an element in list (Recursive)\n"+
+                "9 - Get n'th node in list\n"+
+                "0 - Quit program\n");
+            select = scanner.nextInt();
+            driver(select,scanner);
         }
         scanner.close();
     }
@@ -34,25 +36,25 @@ class W3D15P1{
             case 1 :  
                 System.out.printf("Enter value to insert : ");
                 insert(scan.nextInt());
-                System.out.println()
+                System.out.println();
                 break;
             
             case 2 :
                 System.out.printf("Enter value to delete : ");
                 deleteNode(scan.nextInt());
-                System.out.println()
+                System.out.println();
                 break;
 
             case 3 :
                 System.out.printf("Delete value at position : ");
                 deleteNodeAtPosition(scan.nextInt());
-                System.out.println()
+                System.out.println();
                 break;
 
             case 4 :
-                System.out.printf("Deleting entire list...");
-                deleteList()
-                System.out.printf("Delete completed");
+                System.out.println("Deleting entire list...");
+                deleteList();
+                System.out.println("Delete completed");
                 break;
             
             case 5 :
@@ -60,25 +62,52 @@ class W3D15P1{
                 break;
 
             case 6 :
-                System.out.printf("Search Element in list : ");
-                searchKey(scan.nextInt())
-                System.out.printf();
+                Node temp = head;
+                System.out.printf("Length of list : %d\n",listLengthByRecursion(temp));
                 break;
 
             case 7 :
-                System.out.printf("Get n'th Node of list : ");
-                getKeyAt(scan.nextInt())
-                System.out.printf();
+                System.out.printf("Search Element in list : ");
+                int position = searchKey(scan.nextInt());
+                System.out.println();
+                if(position == -1){
+                    System.out.println("Element not found");
+                }else{
+                    System.out.println("Element Found at : "+position);
+                }
+                break;
+            
+            case 8 :
+                System.out.printf("Search Element in list : ");
+                Node tem = head;
+                int pos = searchKeyByRecursion(tem,scan.nextInt(),1);
+                System.out.println();
+                if(pos == -1){
+                    System.out.println("Element not found");
+                }else{
+                    System.out.println("Element Found at : "+pos);
+                }
                 break;
 
-            case 8 :
+            case 9 :
+                System.out.printf("Get n'th Node of list : ");
+                int p = getKeyAt(scan.nextInt());
+                System.out.println();
+                if(p == -1){
+                    System.out.println("Position out of bound");
+                }else{
+                    System.out.printf("Value at position is : %d \n",p);
+                }
+                break;
+
+            case 0 :
                 loop = false;
         }
     }
 
-    private class Node{
-        private int value = null;
-        private int address = null;
+    static class Node{
+        private int value;
+        private Node address = null;
 
         Node(int value){
             this.value = value;
@@ -107,13 +136,16 @@ class W3D15P1{
 
     private static void displayList(){
         int count = 0;
-        if(head!=null){
-            Node temp = head;
-            while(temp.address != null){
-                count+=1;
-                System.out.printf("Node %d: %d : %d",count,temp.value,temp.address);
-            }
-            System.out.println();
+        Node temp = head;
+
+        if(temp==null){
+            System.out.println("List is Empty");
+        }
+
+        while(temp!=null){
+            count+=1;
+            System.out.printf("Node %d: %d\n",count,temp.value);
+            temp = temp.address;
         }
     }
 
@@ -121,25 +153,32 @@ class W3D15P1{
         Node temp = head;
         Node prevTemp = head;
 
-        if(temp!=null){
-            while(temp.address!=null){
-
-                if(temp.value == key){
-                    tempPrev.address = temp.address;
-                    temp = null;
-                    break;
-                }
-
-                prevTemp = temp;
-                temp = temp.address;
-            }
+        if(temp==null){
+            return;
         }
+
+        if(temp.value == key){
+            head = temp.address;
+            displayList();
+            return;
+        }
+
+        while(temp!=null){
+            if(temp.value == key){
+                prevTemp.address = temp.address;
+                temp = null;
+                break;
+            }
+            prevTemp = temp;
+            temp = temp.address;
+        }
+        displayList();
     }
 
     private static int listLength(){
         Node temp = head;
         if(temp!=null){
-            int count = 1
+            int count = 1;
             while(temp.address!=null){
                 count+=1;
                 temp = temp.address;
@@ -150,30 +189,38 @@ class W3D15P1{
         }
     }
 
-    private static int listLengthByRecursion(Node head,int count){
-        Node temp = head;
+    private static int listLengthByRecursion(Node temp){
         if(temp == null){
-            return count;
+            return 0;
+        }else{
+            return 1 + listLengthByRecursion(temp.address);
         }
-        count++;
-        listLengthByRecursion(temp.address,count);
     }
 
-    private static void deleteNodeAtPosition(int key){
+    private static void deleteNodeAtPosition(int position){
         Node temp = head;
         Node prevTemp = head;
-        if(temp!=null){
-            int count = 0;
-            while(count <= key && temp !=null){
-                count+=1
-                if(count==key){
-                    prevTemp = temp.address;
-                    temp = null;
-                }
-                prevTemp = temp;
-                temp = temp.address;
-            }
 
+        if(temp == null){
+            return;
+        }
+
+        if(position == 1){
+            head = head.address;
+            displayList();
+        }
+
+        int count = 1;
+        while(count <= position && temp != null){
+            prevTemp = temp;
+            temp = temp.address;
+            count+=1;
+            if(count==position){
+                prevTemp.address = temp.address;
+                temp = null;
+                displayList();
+                return;
+            }
         }
     }
 
@@ -184,42 +231,35 @@ class W3D15P1{
     private static int searchKey(int key){
         Node temp = head;
         int position = -1;
-        if(temp!=null){
-            int count = 1;
-
+        int count = 0;
+        while(temp!=null){
+            count++;
             if(temp.value == key){
                 return count;
             }
-
-            while(temp.address !=null){
-                temp = temp.address;
-                count++;
-                if(temp.value == key){
-                    return count;
-                }
-            }
-
-            return position;
-        }else{
-            return position;
+            temp = temp.address;
         }
+        return position;
     }
 
-    private static Node searchKeyByRecursion(Node head,int key){
-        Node temp = head; 
-        if(temp.value == key){
-            return temp;
+    private static int searchKeyByRecursion(Node node,int key,int offset){
+        if(node == null){
+            return -1;
         }
-        if(temp.address !=null){
-            searchKeyByRecursion(temp.address,key);
+        
+        if(node.value == key){
+            return offset;
         }
+        
+        offset = searchKeyByRecursion(node.address,key,offset+1);
+        return offset;
     }
 
     private static int getKeyAt(int position){
         Node temp = head;
-        count = 0
+        int count = 0;
         while(temp!=null){
-            count++
+            count++;
             if(count == position){
                 return temp.value;
             }
