@@ -7,13 +7,13 @@ public class W3D18 {
     public static void main(String[] args){
         createCircularLinkedList();
 
-        //Loop Detection
-        // if(detectLoop()){
-        //     System.out.println("Loop Detected");
-        //     System.out.printf("Loop Started at  : %d \n",loopStart.key);
-        // }else{
-        //     System.out.println("No Loop Detected");
-        // }
+        Loop Detection
+        if(detectLoop()){
+            System.out.println("Loop Detected");
+            System.out.printf("Loop Started at  : %d \n",loopStart.key);
+        }else{
+            System.out.println("No Loop Detected");
+        }
 
         //Increment Integer
         createLinkedList123();
