@@ -10,7 +10,6 @@ public class W3D20P1 {
         int rIndex=arr.length-1;
         while(lIndex<rIndex){
             int mIndex = (lIndex+rIndex)/2;
-            int lValue = arr[lIndex];
             int rValue = arr[rIndex];
             int mValue = arr[mIndex];
             
